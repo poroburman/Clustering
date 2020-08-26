@@ -1,0 +1,71 @@
+---
+title: "Hierarchial_Clustering"
+author: "Poro Burman"
+date: "8/26/20"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+# Introduction    
+
+The purpose of this script is to find a pattern amongst the customers visiting a Mall.    
+The dataset used in this script consists of customers data collected by a Mall.    
+Each row consists of a customer. Each column consists of a customer's variable,    
+including his/her spending score.    
+
+# 1. Data pre-processing    
+
+Import the dataset    
+```{r}
+dataset = read.csv('Mall_Customers.csv')
+```    
+Select the variables to perform clustering on
+```{r}
+X <- dataset[4:5]
+```    
+print top 5 dataset values
+```{r}
+head(dataset)
+```    
+
+# 2. Select number of clusters    
+```{r}
+dendogram <- hclust(dist(X, 
+                        method = 'euclidean'),
+                        method = 'ward.D')
+
+plot(dendogram,
+     main = paste("Dendogram"),
+     xlab = "Customers",
+     ylab = 'Euclidean distance')
+```    
+
+from the elbow plot, I'm selecting 5 clusters for further downstream analysis.    
+
+# 3. Training Hierarchial clustering model on the dataset    
+```{r}
+hc <- hclust(dist(X, method = 'euclidean'), method = 'ward.D')
+
+y_hc = cutree(hc, 5)
+```    
+
+# 4. Visualize the clusters    
+```{r}
+library(cluster)
+
+clusplot(X,
+         y_hc,
+         lines = 0,
+         shade = TRUE,
+         labels = 2,
+         plotchar = FALSE,
+         span = TRUE,
+         main = paste('Clusters of customers'),
+         xlab = "Annual Income",
+         ylab = "Spending Score")
+```    
+
+As you can see, different clusters show the customers who have different annual incomes    
+and their related spending scores. This can be used to target certain specific customers    
+based upon these clusters.
