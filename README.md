@@ -1,4 +1,4 @@
-# Clustering
+# Machine-Learning---Clustering
 
 This repository consists of different projects using various clustering models to analyze datasets.   
 
